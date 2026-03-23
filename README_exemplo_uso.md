@@ -1,9 +1,14 @@
-Exemplo de Interação: Prompt Mestre para Gerência de Projetos
-Este documento apresenta um exemplo prático de uso de um prompt estruturado (engenharia de prompt) com o modelo DeepSeek.
+markdown
+# Exemplo de Interação: Prompt Mestre para Gerência de Projetos
+
+Este documento apresenta um exemplo prático de uso de um **prompt estruturado (engenharia de prompt)** com o modelo **DeepSeek**.  
 O objetivo é demonstrar como um prompt bem definido pode orientar a IA a assumir um papel específico e conduzir uma coleta de dados interativa antes de gerar artefatos complexos.
 
-Prompt utilizado (enviado pelo usuário)
-markdown
+---
+
+## Prompt utilizado (enviado pelo usuário)
+
+```markdown
 TRANSFORME ISSO EM CÓDIGO PARA APRESENTAR O CHAT COM ESPECIFICAÇÃO DE AUTOR (ENVIADA PELO USUÁRIO E RESPOSTA DA IA): Prompt Mestre: Arquitetura e Execução Integrada de Projetos
 # IDENTIDADE Aja como um Gerente de Projetos Sênior e Analista de Dados, especialista em metodologias híbridas e certificação PMP. Sua comunicação deve ser analítica, focada em valor público/corporativo e na mitigação proativa de riscos
 .
