@@ -17,27 +17,25 @@ Este caderno temático foi desenvolvido a partir da exploração de 15 fontes no
 
 ## 📚 Curadoria de Fontes
 
-As fontes utilizadas no NotebookLM combinam conhecimentos de engenharia de prompts, gestão de projetos e análise de dados:
+As 15 fontes utilizadas no NotebookLM são:
 
-1. **OpenAI Prompt Engineering Guide** (link com restrição, mas referenciado como base teórica).
-2. **How to write better prompts for GitHub Copilot** (GitHub Blog) – boas práticas para prompts de código.
-3. **LangChain Quickstart** (docs.langchain.com) – demonstra criação de agentes com ferramentas e memória.
-4. **Elaboração de Projetos – Apostila (ENAP)** – material didático sobre conceitos de projeto, ciclo de vida, áreas de conhecimento.
-5. **Guia Básico de Gestão de Projetos (artia)** – introdução a gestão de projetos, papéis, ciclo de vida e ferramentas.
-6. **Guia Prático de Projetos (MGI/PNUD)** – abordagem adaptada ao setor público, com domínios e artefatos.
-7. **Gestão de Projetos (e-Tec Brasil)** – texto didático sobre conceitos, áreas de conhecimento e metodologias.
-8. **Manual do CNMP** – gestão de projetos no setor público, com modelos de TAP, cronograma, matriz de riscos.
-9. **Gestão de Projetos (KLS)** – abordagem acadêmica sobre escopo, tempo, custos, riscos e portfólio.
-10. **A Tomada de Decisão Baseada em Dados na Indústria 4.0 (TCC USP)** – revisão sobre como dados influenciam a decisão.
-11. **Big Data Analytics na Qualidade da Tomada de Decisão (UFRGS)** – revisão sobre fatores que influenciam a qualidade da decisão.
-12. **A Prompt Pattern Catalog (arXiv)** – catálogo de 16 padrões de prompt aplicáveis a LLMs.
-13. **Resenha: Análise da informação para tomada de decisão** – discussão sobre inteligência organizacional, Web 2.0 e Big Data.
-14. **Webquest – Tomada de Decisão** – artigo sobre Business Intelligence, ERP e a importância de dados estruturados.
-15. **Outros PDFs e materiais** sobre gestão de projetos, riscos, sustentabilidade e portfólio.
+1. **OpenAI Prompt Engineering Guide** (link com restrição de acesso, referenciado como base teórica).
+2. **How to write better prompts for GitHub Copilot** – artigo do GitHub Blog sobre boas práticas para prompts de código.
+3. **LangChain Quickstart** – documentação oficial da LangChain sobre criação de agentes com ferramentas e memória.
+4. **Elaboração de Projetos_Apostila.pdf** – material da ENAP sobre conceitos de projeto, ciclo de vida e áreas de conhecimento.
+5. **11._gestao_de_projetos_autor_luiz_fernando_rodrigues_campos.pdf** – livro didático do e-Tec Brasil sobre gestão de projetos.
+6. **Ebook-gestao-de-projetos-v01a-19-04-2023-compressed.pdf** – guia básico de gestão de projetos da artia.
+7. **guia-pratico-de-projetos.pdf** – guia prático do MGI/PNUD, com abordagem adaptada ao setor público.
+8. **manual_CNMP.pdf** – manual do Conselho Nacional do Ministério Público sobre gestão de projetos no setor público.
+9. **gestao-de-projetos_livro_alunos.pdf** – livro da KLS sobre gestão de projetos (escopo, tempo, custos, riscos, portfólio).
+10. **Ruy_Guilherme_Ravazi_TCC.pdf** – trabalho de conclusão de curso da USP sobre tomada de decisão baseada em dados na Indústria 4.0.
+11. **007ff380ee5ac49ffc34442f5c2a2b86.pdf** – artigo acadêmico sobre Big Data Analytics na qualidade da tomada de decisão (UFRGS).
+12. **2302.11382v1.pdf** – catálogo de padrões de prompt (arXiv), com 16 padrões aplicáveis a LLMs.
+13. **diego,+1684.pdf** – resenha do livro “Análise da informação para tomada de decisão”, abordando inteligência organizacional, Web 2.0 e Big Data.
+14. **2. Webquest - Roberto Roggiero Junior.pdf** – artigo sobre Business Intelligence, ERP e tomada de decisão.
+15. **A Tomada de Decisão Baseada em Dados na Indústria 4.0 (TCC USP)** – já listado no item 10, mas mantido como referência consolidada no conjunto de 15 fontes.
 
 ## 🧪 Engenharia de Prompts e “Cicatrizes”
-
-As perguntas a seguir foram feitas ao NotebookLM durante a investigação. A coluna “Resposta da IA” transcreve os trechos mais relevantes obtidos, e a coluna “Aprendizado / Ajuste” documenta as cicatrizes.
 
 | Fase | Prompt / Pergunta | Resposta da IA | Aprendizado / Ajuste |
 |------|-------------------|----------------|----------------------|
@@ -131,3 +129,22 @@ Após a coleta de dados, gere os seguintes artefatos integrados:
 
 # FORMATO DE SAÍDA
 Apresente os resultados em tabelas Markdown. Use linguagem simples e acessível, evitando tecnicismos desnecessários na comunicação com stakeholders.
+Prompt para Identificar Riscos Invisíveis
+markdown
+Atue como um analista de riscos.  
+Com base no projeto [descreva brevemente], faça-me perguntas para identificar:
+- Premissas frágeis que podem se tornar riscos.
+- Stakeholders ocultos (órgãos reguladores, comunidades afetadas, etc.).
+- Possíveis fontes de scope creep e gold plating.
+Após minhas respostas, elabore uma matriz de riscos com causas, consequências e estratégias de resposta.
+Prompt para Criar Matriz RACI
+markdown
+Aja como um especialista em governança de projetos.  
+Com base na EAP fornecida, crie uma matriz RACI (Responsável, Aprovador, Consultado, Informado) para cada pacote de trabalho.  
+Considere os seguintes papéis: Gerente de Projetos, Patrocinador, Equipe Técnica, Usuários-chave.  
+Apresente em formato de tabela.
+Prompt para Documentar Lições Aprendidas
+markdown
+Crie um modelo de registro de lições aprendidas para o projeto [nome].  
+Inclua campos para: fase do projeto, situação observada, impacto, causa raiz, ação tomada, recomendação para projetos futuros.  
+Ao final de cada marco, preencherei este modelo com a equipe.
