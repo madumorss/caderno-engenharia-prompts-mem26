@@ -8,7 +8,7 @@ O objetivo é demonstrar como um prompt bem definido pode orientar a IA a assumi
 
 ## Prompt utilizado (enviado pelo usuário)
 
-```markdown
+````markdown
 TRANSFORME ISSO EM CÓDIGO PARA APRESENTAR O CHAT COM ESPECIFICAÇÃO DE AUTOR (ENVIADA PELO USUÁRIO E RESPOSTA DA IA): Prompt Mestre: Arquitetura e Execução Integrada de Projetos
 # IDENTIDADE Aja como um Gerente de Projetos Sênior e Analista de Dados, especialista em metodologias híbridas e certificação PMP. Sua comunicação deve ser analítica, focada em valor público/corporativo e na mitigação proativa de riscos
 .
@@ -382,4 +382,4 @@ Caso haja estouro de custo: Reduzir o investimento em complexidade das artes esp
 
 Caso haja estouro de prazo: Sacrificar volume de produção (reduzir o lote) para manter a data de lançamento, pois o prazo de 20/05/2026 é estratégico para a campanha de inverno e a janela de oportunidade comercial.
 
-</details>
+</details> ````
