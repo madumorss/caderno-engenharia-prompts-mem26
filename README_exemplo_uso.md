@@ -1,4 +1,160 @@
-Prompt Mestre: Arquitetura e Execução Integrada de Projetos
+python
+import re
+
+def parse_conversation(text):
+    """
+    Divide o histórico em blocos de interação.
+    Identifica trechos que começam com '**Minha pergunta:**', '**Próxima Pergunta**',
+    'Artista brasileira:', 'Data de lançamento', etc.
+    Retorna uma lista de dicionários com 'user', 'reflection', 'assistant'.
+    """
+    # Remover cabeçalho inicial do prompt (primeiro bloco até "Ok, the user...")
+    # Vamos usar uma abordagem simples: dividir por linhas e identificar padrões
+    
+    lines = text.split('\n')
+    interactions = []
+    current = {'user': [], 'assistant': [], 'reflection': []}
+    state = None  # 'user', 'assistant', 'reflection'
+    
+    # Padrões de início de fala
+    user_patterns = [
+        r'^\*\*Minha pergunta:\*\*',
+        r'^\*\*Próxima Pergunta.*\*\*',
+        r'^Artista brasileira:',
+        r'^Data de lançamento prevista',
+        r'^1\. licenciamento de imagem',
+        r'^2\. analise e me sugira',
+        r'^3\. quero que as fases',
+        r'^// Apresente um cronograma',
+        r'^Refinamento de Pergunta',
+        r'^\d+\. '  # números no início (1., 2., etc.) - mas pode conflitar com títulos
+    ]
+    
+    assistant_patterns = [
+        r'^Entendido, Gerente de Projetos',
+        r'^Perfeito\. Incorporando',
+        r'^Com base nas informações',
+        r'^OK, o usuário está agindo',
+        r'^Vou analisar o que o usuário',
+        r'^Minha estratégia será:',
+        r'^No geral, minha resposta',
+        r'^Perfeito\. Agora tenho dados',
+        r'^Cronograma de Marcos por Fase',
+        r'^Próximas Perguntas \(Validação',
+        r'^1\. Orçamento e Viabilidade',
+        r'^2\. Fases do Projeto',
+        r'^3\. Principais Entregáveis',
+        r'^Refinamento de Pergunta \(Sugestão\)',
+        r'^Aguardando suas respostas',
+        r'^Com base nas informações consolidadas',
+        r'^1\. Termo de Abertura do Projeto',
+        r'^2\. Escopo Detalhado',
+        r'^3\. Estrutura Analítica do Projeto',
+        r'^4\. Matriz de Responsabilidades',
+        r'^5\. Gestão de Incertezas',
+        r'^6\. Plano de Comunicação',
+        r'^7\. Monitoramento e Sustentabilidade',
+        r'^8\. Reflexão',
+        r'^9\. Lista de Verificação',
+        r'^10\. Modelo de Lições Aprendidas',
+        r'^Análise de Trade-Off',
+        r'^Próximos Passos:'
+    ]
+    
+    reflection_pattern = r'^Reflexão:'
+    
+    for line in lines:
+        # Verificar se é início de reflexão
+        if re.match(reflection_pattern, line):
+            if current['user'] or current['assistant']:
+                # finaliza interação anterior
+                if current['user'] or current['assistant']:
+                    interactions.append({
+                        'user': '\n'.join(current['user']).strip(),
+                        'assistant': '\n'.join(current['assistant']).strip(),
+                        'reflection': '\n'.join(current['reflection']).strip()
+                    })
+                current = {'user': [], 'assistant': [], 'reflection': []}
+            state = 'reflection'
+            current['reflection'].append(line)
+            continue
+        
+        # Verificar se é início de fala do usuário
+        is_user = any(re.match(p, line) for p in user_patterns)
+        if is_user and state != 'user':
+            if current['user'] or current['assistant']:
+                interactions.append({
+                    'user': '\n'.join(current['user']).strip(),
+                    'assistant': '\n'.join(current['assistant']).strip(),
+                    'reflection': '\n'.join(current['reflection']).strip()
+                })
+            current = {'user': [], 'assistant': [], 'reflection': []}
+            state = 'user'
+            current['user'].append(line)
+            continue
+        
+        # Verificar se é início de fala do assistente
+        is_assistant = any(re.match(p, line) for p in assistant_patterns)
+        if is_assistant and state != 'assistant':
+            if current['user'] or current['assistant']:
+                interactions.append({
+                    'user': '\n'.join(current['user']).strip(),
+                    'assistant': '\n'.join(current['assistant']).strip(),
+                    'reflection': '\n'.join(current['reflection']).strip()
+                })
+            current = {'user': [], 'assistant': [], 'reflection': []}
+            state = 'assistant'
+            current['assistant'].append(line)
+            continue
+        
+        # Adicionar linha ao bloco atual
+        if state == 'user':
+            current['user'].append(line)
+        elif state == 'assistant':
+            current['assistant'].append(line)
+        elif state == 'reflection':
+            current['reflection'].append(line)
+        else:
+            # Se ainda não definido, tentar inferir
+            if not current['user'] and not current['assistant']:
+                # Pode ser continuação do assistente? Vamos assumir assistente
+                state = 'assistant'
+                current['assistant'].append(line)
+            else:
+                # Se já tem algo, continua no último estado
+                if current['assistant']:
+                    current['assistant'].append(line)
+                elif current['user']:
+                    current['user'].append(line)
+    
+    # Adicionar último bloco
+    if current['user'] or current['assistant']:
+        interactions.append({
+            'user': '\n'.join(current['user']).strip(),
+            'assistant': '\n'.join(current['assistant']).strip(),
+            'reflection': '\n'.join(current['reflection']).strip()
+        })
+    
+    return interactions
+
+def generate_markdown(interactions):
+    """Gera o arquivo Markdown com as seções."""
+    md = "# Estrutura Organizada da Conversa\n\n"
+    for i, inter in enumerate(interactions, 1):
+        md += f"## Interação {i}\n\n"
+        md += "### ENVIADA - USUARIO\n\n"
+        md += f"{inter['user'] if inter['user'] else '*[vazio]*'}\n\n"
+        md += "### REFLEXÃO\n\n"
+        md += f"{inter['reflection'] if inter['reflection'] else '*[não identificado]*'}\n\n"
+        md += "### RESPOSTA - IA\n\n"
+        md += f"{inter['assistant'] if inter['assistant'] else '*[vazio]*'}\n\n"
+        md += "---\n\n"
+    return md
+
+if __name__ == "__main__":
+    # Substitua pelo texto completo da conversa
+    conversation_text = """
+    [Prompt Mestre: Arquitetura e Execução Integrada de Projetos
 # IDENTIDADE Aja como um Gerente de Projetos Sênior e Analista de Dados, especialista em metodologias híbridas e certificação PMP. Sua comunicação deve ser analítica, focada em valor público/corporativo e na mitigação proativa de riscos
 .
 # CONTEXTO DO PROJETO Utilize as informações abaixo como base inicial: <nome> VENTILACOR </nome> <justificativa> PARCERIA DA BRITANIA COM ARTISTA BRASILEIRO PARA FAZER UMA LINHA DE VENTILADORES PERSONALIZADOS </justificativa> <objetivo_macro> AUMENTAR O TICKET MÉDIO DAS VENDAS DE VENTILADORES </objetivo_macro>
@@ -520,4 +676,13 @@ Variável a ser sacrificada em caso de estouro de custo ou prazo
 Caso haja estouro de custo: Reduzir o investimento em complexidade das artes especiais (ex.: embalagem menos elaborada, redução de cores) antes de cortar marketing, pois o marketing é o vetor principal para garantir a rápida rotação do estoque e a percepção de valor da parceria.
 Caso haja estouro de prazo: Sacrificar volume de produção (reduzir o lote) para manter a data de lançamento, pois o prazo de 20/05/2026 é estratégico para a campanha de inverno e a janela de oportunidade comercial.
 
-Próximos Passos: Recomendo que o Gerente de Projetos convoque uma reunião de kick-off com os stakeholders listados na matriz RACI para validar o escopo, aprovar o TAP e iniciar imediatamente a Lista de Verificação de Fatos. Após a validação das premissas críticas, o plano estará pronto para execução.
+Próximos Passos: Recomendo que o Gerente de Projetos convoque uma reunião de kick-off com os stakeholders listados na matriz RACI para validar o escopo, aprovar o TAP e iniciar imediatamente a Lista de Verificação de Fatos. Após a validação das premissas críticas, o plano estará pronto para execução.]
+    """
+    
+    interactions = parse_conversation(conversation_text)
+    output = generate_markdown(interactions)
+    
+    with open("conversa_estruturada.md", "w", encoding="utf-8") as f:
+        f.write(output)
+    
+    print(f"Arquivo gerado com {len(interactions)} interações.")
